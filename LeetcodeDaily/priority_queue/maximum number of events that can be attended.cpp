@@ -45,3 +45,45 @@ public:
         return count;
     }
 };
+
+
+
+/////////////////////////////////////////////      python //////////////
+import heapq
+
+class Solution:
+    def maxEvents(self, events):
+        # Step 1: Sort events by start day
+        events.sort()
+        
+        min_heap = []  # Min-heap to store end days of available events
+        day = events[0][0]  # Start from the first event's start day
+        i = 0  # Pointer to iterate over events
+        count = 0  # Number of events attended
+        n = len(events)
+
+        # Process until all events are considered and heap is empty
+        while i < n or min_heap:
+
+            # If no active events, jump to next available event's start day
+            if not min_heap:
+                day = events[i][0]
+
+            # Add all events that start today to the heap
+            while i < n and events[i][0] == day:
+                heapq.heappush(min_heap, events[i][1])  # Push end day
+                i += 1
+
+            # Attend the event that ends earliest
+            if min_heap:
+                heapq.heappop(min_heap)  # Attend it
+                count += 1  # Increment attended event count
+
+            day += 1  # Move to next day
+
+            # Remove all events from heap that have expired
+            while min_heap and min_heap[0] < day:
+                heapq.heappop(min_heap)
+
+        return count
+
