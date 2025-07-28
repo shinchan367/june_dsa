@@ -1,0 +1,24 @@
+class Solution {
+public:
+int maxor=0;int count=0;
+    void countor(vector<int>&nums,int idx,int currentor){
+        if(idx==nums.size()){
+            if(currentor==maxor)count++;
+            return;
+        }
+            countor(nums,idx+1,currentor | nums[idx]);
+            countor(nums,idx+1,currentor);
+       
+    }
+    
+
+    int countMaxOrSubsets(vector<int>& nums) {
+        int n=nums.size();
+        for(int num:nums){
+           maxor|=num;
+        }
+        countor(nums,0,0);
+
+        return count;
+    }
+};
